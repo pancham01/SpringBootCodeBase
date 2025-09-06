@@ -1,4 +1,4 @@
-package com.chandan.springboot.serviceImpl;
+package com.chandan.springboot.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.chandan.springboot.entity.User;
 import com.chandan.springboot.repository.UserRepository;
-import com.chandan.springboot.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
