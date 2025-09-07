@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "user_table")
@@ -13,10 +15,14 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
+	@Size(min = 2,max = 10,message = "Name is too short..........")
 	private String userFullName;
+	@Email(message = "Invalid email........")
 	private String userEmail;
+	@Size(min = 10,max = 10,message = "Kindly enter min 10 digits bro")
 	private String userMob;
 	private String userCity;
+	
 	private String userGender;
 
 	public User() {

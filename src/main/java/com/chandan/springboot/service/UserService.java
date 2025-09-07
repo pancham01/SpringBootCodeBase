@@ -9,7 +9,7 @@ import com.chandan.springboot.entity.User;
 
 public interface UserService {
 
-	public ResponseEntity<User> saveUser(User user);
+	public User saveUser(User user);
 
 	public Optional<User> getUserById(Long userId);
 

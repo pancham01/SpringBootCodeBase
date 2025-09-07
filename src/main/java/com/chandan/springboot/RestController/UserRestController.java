@@ -1,10 +1,14 @@
 package com.chandan.springboot.RestController;
 
+import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,10 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.chandan.springboot.entity.User;
 import com.chandan.springboot.exception.UserNotFoundException;
 import com.chandan.springboot.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -35,8 +42,20 @@ public class UserRestController {
 	}
 
 	@PostMapping(value = "/saveUser")
-	public ResponseEntity<User> saveUser(@RequestBody User user) {
-		return userService.saveUser(user);
+	public ResponseEntity<Object> saveUser(@Valid @RequestBody User user, BindingResult result) {
+		if (result.hasErrors()) {
+			HashMap<String, String> errorsMap = new HashMap<>();
+			List<FieldError> fieldErrors = result.getFieldErrors();
+			for (FieldError f : fieldErrors) {
+				errorsMap.put(f.getField(), f.getDefaultMessage());
+			}
+			return ResponseEntity.badRequest().body(errorsMap);
+		}
+		User saveUser = userService.saveUser(user);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveUser.getUserId())
+				.toUri();
+		return ResponseEntity.created(uri).body(saveUser);
 	}
 
 	@GetMapping(value = "/getUserById/{id}")
