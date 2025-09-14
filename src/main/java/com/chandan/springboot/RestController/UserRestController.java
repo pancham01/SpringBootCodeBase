@@ -3,9 +3,13 @@ package com.chandan.springboot.RestController;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -28,6 +32,17 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping(value = "/api")
 public class UserRestController {
+	@Autowired
+	private MessageSource messageSource;
+	
+	
+	public UserRestController()
+	{
+	}
+	public UserRestController(MessageSource messageSource)
+	{
+		this.messageSource=messageSource;
+	}
 
 	private UserService userService = null;
 
@@ -58,7 +73,7 @@ public class UserRestController {
 		return ResponseEntity.created(uri).body(saveUser);
 	}
 
-	@GetMapping(value = "/getUserById/{id}")
+	@GetMapping(value = "/getUserById/{id}", produces = { MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity getUserById(@PathVariable(value = "id") Long userId) {
 		Optional<User> user = userService.getUserById(userId);
 		if (user.isEmpty()) {
@@ -82,5 +97,12 @@ public class UserRestController {
 	@DeleteMapping(value = "/deleteUserById/{id}")
 	public ResponseEntity<String> deleteUserById(@PathVariable(value = "id") Long userId) {
 		return userService.deleteUserById(userId);
+	}
+	
+	@GetMapping
+	public String implI18n(Locale locale)
+	{
+		System.err.println("UserRestController.implI18n()");
+		return messageSource.getMessage("greeting", null, locale);
 	}
 }

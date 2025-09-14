@@ -38,6 +38,21 @@ public class User {
 		this.userGender = userGender;
 	}
 
+	
+
+	public User(long userId, @Size(min = 2, max = 10, message = "Name is too short..........") String userFullName,
+			@Email(message = "Invalid email........") String userEmail,
+			@Size(min = 10, max = 10, message = "Kindly enter min 10 digits bro") String userMob, String userCity,
+			String userGender) {
+		super();
+		this.userId = userId;
+		this.userFullName = userFullName;
+		this.userEmail = userEmail;
+		this.userMob = userMob;
+		this.userCity = userCity;
+		this.userGender = userGender;
+	}
+
 	public long getUserId() {
 		return userId;
 	}
