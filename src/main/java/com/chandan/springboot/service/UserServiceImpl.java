@@ -31,13 +31,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<List<User>> getAllUser() {
-
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userRepo.findAll());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
+	public List<User> getAllUser() {
+			return userRepo.findAll();
 	}
 
 	@Override

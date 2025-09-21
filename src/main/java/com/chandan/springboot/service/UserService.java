@@ -13,7 +13,7 @@ public interface UserService {
 
 	public Optional<User> getUserById(Long userId);
 
-	public ResponseEntity<List<User>> getAllUser();
+	public List<User> getAllUser();
 
 	public ResponseEntity<String> deleteUserById(Long userId);
 
